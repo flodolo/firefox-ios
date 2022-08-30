@@ -1,0 +1,33 @@
+name: Test workflow strings
+on:
+  workflow_dispatch:
+    inputs:
+      branchName:
+        description: 'Branch used as target for automation'
+        required: true
+        default: 'main'
+jobs:
+  import:
+    runs-on: macos-12
+    steps:
+      - name: Get PR info
+        run: |
+          current_date=$(date +"%Y-%m-%d")
+          echo "current_date=$current_date" >> $GITHUB_ENV
+          echo "branch_name=string-import-$current_date" >> $GITHUB_ENV
+          if [[ ${{ github.event.inputs.branchName }} == 'main' ]]; then
+            echo "pr_title=Localize [ver] String import $current_date" >> $GITHUB_ENV
+            echo "pr_body=This automated PR imports string changes" >> $GITHUB_ENV
+          else
+            branch=${{ github.event.inputs.branchName }}
+            # version: v105.0 -> v105
+            version=${branch%??}
+            echo "pr_title=Localize [$version] String import $current_date" >> $GITHUB_ENV
+            echo "pr_body=This automated PR imports string changes into branch '$branch'" >> $GITHUB_ENV
+          fi
+      - name: Test
+        run: |
+          echo "commit-message: ${{ env.pr_title }}"
+          echo "title: ${{ env.pr_title }}"
+          echo "branch: ${{ env.branch_name }}"
+          echo "body: ${{ env.pr_body }}"
