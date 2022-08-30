@@ -3,7 +3,11 @@ on:
   schedule:
     - cron: '0 11 * * 1'
   workflow_dispatch:
-
+    inputs:
+      branchName:
+        description: 'Branch used as target for automation'
+        required: true
+        default: 'main'
 jobs:
   build:
     runs-on: macos-12
@@ -17,6 +21,7 @@ jobs:
       with:
         persist-credentials: false
         token: ${{ secrets.GITHUB_TOKEN }}
+        ref: ${{ github.event.inputs.branchName }}
     - name: Select Xcode ${{ matrix.xcode }}
       run: sudo xcode-select -s /Applications/Xcode_${{ matrix.xcode }}.app
     - name: Set up Python ${{ matrix.python-version }}
@@ -38,6 +43,6 @@ jobs:
         committer: GitHub <noreply@github.com>
         token: ${{ secrets.GITHUB_TOKEN }}
         commit-message: string-import-${{ env.current_date }}
-        title: "Localize [version] String import ${{ env.current_date }}"
+        title: "Localize [${{ github.event.inputs.branchName }}] String import ${{ env.current_date }}"
         branch: string-import-${{ env.current_date }}
-        body: "This (automated) PR import string changes"
+        body: "This (automated) PR import string changes (branch: ${{ github.event.inputs.branchName }})"
