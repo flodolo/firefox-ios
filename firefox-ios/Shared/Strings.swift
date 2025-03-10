@@ -4118,6 +4118,11 @@ extension String {
             tableName: "EngagementNotification",
             value: "Private browsing in %@ doesn’t save your info and blocks hidden trackers.",
             comment: "Body of notification sent to user after inactivity to encourage them to use the private browsing feature. %@ is the app name (e.g. Firefox).")
+        public static let BodyTreatmentAxxx = MZLocalizedString(
+            key: "Engagement.Notification.Treatment.A.Body.vxxx",
+            tableName: "EngagementNotification",
+            value: "Private browsing in %@ doesn’t save your info and blocks hidden trackers.",
+            comment: "Body of notification sent to user after inactivity to encourage them to use the private browsing feature.")
 
         public static let TitleTreatmentB = MZLocalizedString(
             key: "Engagement.Notification.Treatment.B.Title.v114",
